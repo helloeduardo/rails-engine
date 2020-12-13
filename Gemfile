@@ -41,6 +41,7 @@ group :development do
 end
 
 group :test do
+  gem 'nyan-cat-formatter'
   gem 'rspec-rails'
   gem 'capybara'
   gem 'launchy'
