@@ -82,7 +82,6 @@ RSpec.describe 'Merchants API', type: :request do
     merchant_items = JSON.parse(response.body, symbolize_names: true)[:data]
 
     expect(merchant_items.count).to eq(3)
-    require "pry"; binding.pry
 
     merchant_items.each do |merchant_item|
       expect(merchant_item).to have_key(:id)
