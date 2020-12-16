@@ -36,9 +36,7 @@ RSpec.describe 'Merchants API', type: :request do
   end
 
   it "can create a merchant" do
-    merchant_params = {
-                    name: 'Barnes & Noble'
-                  }
+    merchant_params = { name: 'Barnes & Noble' }
     headers = {"CONTENT_TYPE" => "application/json"}
 
     post "/api/v1/merchants", headers: headers, params: JSON.generate(merchant: merchant_params)
@@ -46,5 +44,20 @@ RSpec.describe 'Merchants API', type: :request do
 
     expect(response).to be_successful
     expect(created_merchant.name).to eq(merchant_params[:name])
+  end
+
+  it "can update a merchant" do
+    id = create(:merchant).id
+    previous_name = Merchant.last.name
+    merchant_params = { name: 'Barnes & Noble' }
+    headers = {"CONTENT_TYPE" => "application/json"}
+
+    # We include this header to make sure that these params are passed as JSON rather than as plain text
+    patch "/api/v1/merchants/#{id}", headers: headers, params: JSON.generate(merchant: merchant_params)
+    merchant = Merchant.find_by(id: id)
+
+    expect(response).to be_successful
+    expect(merchant.name).to_not eq(previous_name)
+    expect(merchant.name).to eq('Barnes & Noble')
   end
 end
