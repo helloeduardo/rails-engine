@@ -71,4 +71,37 @@ RSpec.describe 'Merchants API', type: :request do
     expect(Merchant.count).to eq(0)
     expect{Merchant.find(merchant.id)}.to raise_error(ActiveRecord::RecordNotFound)
   end
+
+  it "can get items belonging to a merchant" do
+    id = create(:merchant, :with_items).id
+
+    get "/api/v1/merchants/#{id}/items"
+
+    expect(response).to be_successful
+
+    merchant_items = JSON.parse(response.body, symbolize_names: true)[:data]
+
+    expect(merchant_items.count).to eq(3)
+    require "pry"; binding.pry
+
+    merchant_items.each do |merchant_item|
+      expect(merchant_item).to have_key(:id)
+      expect(merchant_item[:id]).to be_an(String)
+
+      expect(merchant_item).to have_key(:type)
+      expect(merchant_item[:type]).to eq("item")
+
+      expect(merchant_item).to have_key(:attributes)
+      expect(merchant_item[:attributes]).to be_a(Hash)
+
+      expect(merchant_item[:attributes]).to have_key(:name)
+      expect(merchant_item[:attributes][:name]).to be_an(String)
+
+      expect(merchant_item[:attributes]).to have_key(:description)
+      expect(merchant_item[:attributes][:description]).to be_an(String)
+
+      expect(merchant_item[:attributes]).to have_key(:unit_price)
+      expect(merchant_item[:attributes][:unit_price]).to be_a(Float)
+    end
+  end
 end
