@@ -52,12 +52,23 @@ RSpec.describe 'Merchants API', type: :request do
     merchant_params = { name: 'Barnes & Noble' }
     headers = {"CONTENT_TYPE" => "application/json"}
 
-    # We include this header to make sure that these params are passed as JSON rather than as plain text
     patch "/api/v1/merchants/#{id}", headers: headers, params: JSON.generate(merchant: merchant_params)
     merchant = Merchant.find_by(id: id)
 
     expect(response).to be_successful
     expect(merchant.name).to_not eq(previous_name)
     expect(merchant.name).to eq('Barnes & Noble')
+  end
+
+  it "can destroy a merchant" do
+    merchant = create(:merchant)
+
+    expect(Merchant.count).to eq(1)
+
+    expect{ delete "/api/v1/merchants/#{merchant.id}" }.to change(Merchant, :count).by(-1)
+
+    expect(response).to be_successful
+    expect(Merchant.count).to eq(0)
+    expect{Merchant.find(merchant.id)}.to raise_error(ActiveRecord::RecordNotFound)
   end
 end
