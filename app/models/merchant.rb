@@ -11,4 +11,12 @@ class Merchant < ApplicationRecord
       find_by("LOWER(#{attribute}) LIKE ?", "%#{value.downcase}%")
     end
   end
+
+  def self.multi_search(attribute, value)
+    if attribute == 'created_at' || attribute == 'updated_at'
+      where("DATE(#{attribute}) = '%#{value.to_date}%'")
+    else
+      where("LOWER(#{attribute}) LIKE ?", "%#{value.downcase}%")
+    end
+  end
 end
