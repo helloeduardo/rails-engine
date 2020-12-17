@@ -1,9 +1,7 @@
 RSpec.describe 'Search Merchants API', type: :request do
   describe '/find? endpoint' do
     it 'can find a merchant by exact attribute match' do
-      create_list(:merchant, 3)
-
-      merchant = Merchant.last
+      merchant = create(:merchant)
 
       get "/api/v1/merchants/find?name=#{merchant.name}"
 
@@ -19,8 +17,6 @@ RSpec.describe 'Search Merchants API', type: :request do
     end
 
     it 'can find a merchant by case-insensitive partial attribute match' do
-      create_list(:merchant, 3)
-
       merchant = create(:merchant, name: "Wal-Mart")
 
       get "/api/v1/merchants/find?name=ARt"
@@ -37,8 +33,6 @@ RSpec.describe 'Search Merchants API', type: :request do
     end
 
     it 'can find a merchant by date attribute match' do
-      create_list(:merchant, 3)
-
       merchant = create(:merchant, created_at: 3.days.ago)
 
       get "/api/v1/merchants/find?created_at=#{merchant.created_at}"
@@ -57,9 +51,12 @@ RSpec.describe 'Search Merchants API', type: :request do
 
   describe '/find_all? endpoint' do
     it 'can find all merchants by attribute' do
-      create_list(:merchant, 3)
+      create(:merchant, name: "Walgreens")
+      create(:merchant, name: "Wal-Mart")
+      create(:merchant, name: "Wally World")
+      create(:merchant, name: "Outdoor World")
 
-      get '/api/v1/merchants'
+      get '/api/v1/merchants/find_all?name=wal'
 
       expect(response).to be_successful
 
@@ -75,6 +72,5 @@ RSpec.describe 'Search Merchants API', type: :request do
         expect(merchant[:attributes][:name]).to be_a(String)
       end
     end
-
   end
 end
