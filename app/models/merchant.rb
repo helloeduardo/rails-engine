@@ -4,10 +4,11 @@ class Merchant < ApplicationRecord
 
   validates :name, presence: true
 
-  def self.search(params)
-    attribute = arel_table[params.keys.first]
-    value = "%#{params.values.first}%"
-
-    find_by(attribute.matches(value))
+  def self.single_search(attribute, value)
+    if attribute == 'created_at' || attribute == 'updated_at'
+      find_by("DATE(#{attribute}) = '%#{value.to_date}%'")
+    else
+      find_by("LOWER(#{attribute}) LIKE ?", "%#{value.downcase}%")
+    end
   end
 end
