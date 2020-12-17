@@ -1,4 +1,9 @@
 class Api::V1::Merchants::SearchController < ApplicationController
+  def index
+    merchants = Merchant.multi_search(attribute, value)
+    render json: MerchantSerializer.new(merchants)
+  end
+
   def show
     merchant = Merchant.single_search(attribute, value)
     render json: MerchantSerializer.new(merchant)
