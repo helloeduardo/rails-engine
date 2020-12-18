@@ -55,4 +55,20 @@ RSpec.describe 'Merchants Business Intelligence API', type: :request do
     expect(merchants.second[:attributes][:name]).to be_a(String)
     expect(merchants.second[:attributes][:name]).to eq(merchant_2.name)
   end
+
+  it "can return a merchant's revenue" do
+    merchant = Merchant.first
+
+    get "/api/v1/merchants/#{merchant.id}/revenue"
+
+    expect(response).to be_successful
+
+    revenue = JSON.parse(response.body, symbolize_names: true)[:data]
+
+    expect(revenue).to have_key(:id)
+    expect(revenue[:id]).to eq(nil)
+
+    expect(revenue[:attributes]).to have_key(:revenue)
+    expect(revenue[:attributes][:revenue]).to eq(merchant.revenue)
+  end
 end
