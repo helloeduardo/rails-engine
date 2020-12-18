@@ -14,6 +14,11 @@ class Api::V1::Merchants::SearchController < ApplicationController
     render json: MerchantSerializer.new(merchants)
   end
 
+  def most_items
+    merchants = Merchant.most_items(merchant_params[:quantity].to_i)
+    render json: MerchantSerializer.new(merchants)
+  end
+
   private
     def merchant_params
       params.permit(:name, :created_at, :updated_at, :quantity)
