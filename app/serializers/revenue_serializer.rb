@@ -6,7 +6,7 @@ class RevenueSerializer
         "id": nil,
         "attributes":
         {
-          "revenue": amount
+          "revenue": amount.round(2)
         }
       }
     }
