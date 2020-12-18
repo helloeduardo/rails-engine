@@ -30,7 +30,7 @@
     * [Merchant Items Relationship](#merchant-items-relationship)
     * [Item Merchant Relationship](#item-merchant-relationship)
     * [Find One Resource By Attribute](#find-one-resource-by-attribute)
-    * [Find Many Resources By Attribute](#find-many-resource-by-attribute)
+    * [Find Many Resources By Attribute](#find-many-resources-by-attribute)
     * [Merchants with Most Revenue](#merchants-with-most-revenue)
     * [Merchants with Most Items Sold](#merchants-with-most-items-sold)
     * [Revenue across Date Range](#revenue-across-date-range)
