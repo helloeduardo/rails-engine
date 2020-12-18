@@ -353,7 +353,7 @@ Example JSON response for `GET /api/v1/revenue?start=2012-03-09&end=2012-03-24`
   "data": {
     "id": null,
     "attributes": {
-      "revenue"  : 43201227.8000003
+      "revenue"  : 43201227.80
     }
   }
 }
@@ -371,7 +371,7 @@ Example JSON response for `GET /api/v1/merchants/1/revenue`
   "data": {
     "id": null,
     "attributes": {
-      "revenue"  : 43201227.8000003
+      "revenue"  : 43201227.80
     }
   }
 }
