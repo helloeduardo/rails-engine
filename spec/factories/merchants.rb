@@ -13,14 +13,20 @@ FactoryBot.define do
     end
 
     trait :with_revenue do
-      after :create do |merchant|
-        3.times do
-          invoice = create(:invoice, merchant: merchant)
-          item = create(:item, merchant: merchant)
-          item_2 = create(:item, merchant: merchant)
+      transient do
+        invoice_count { 3 }
+        items_per_invoice { 3 }
+      end
 
-          create(:invoice_item, item: item, invoice: invoice, unit_price: item.unit_price)
-          create(:invoice_item, item: item_2, invoice: invoice, unit_price: item_2.unit_price)
+      after :create do |merchant, evaluator|
+        evaluator.invoice_count.times do
+          invoice = create(:invoice, merchant: merchant)
+          items = create_list(:item, evaluator.items_per_invoice, merchant: merchant)
+
+          items.each do |item|
+            create(:invoice_item, item: item, invoice: invoice, unit_price: item.unit_price)
+          end
+
           create(:transaction, invoice: invoice)
         end
       end
