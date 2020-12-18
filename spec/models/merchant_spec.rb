@@ -65,5 +65,52 @@ RSpec.describe Merchant, type: :model do
         expect(Merchant.multi_search('updated_at', '2020-12-15')).to eq([@merchant_2])
       end
     end
+
+    describe '#most_revenue' do
+      it 'returns a number of merchants with the highest revenue' do
+        merchants = create_list(:merchant, 3, :with_revenue)
+        merchants_by_revenue = merchants.sort_by(&:revenue).reverse
+
+        expect(Merchant.most_revenue(1)).to eq(merchants_by_revenue.first(1))
+        expect(Merchant.most_revenue(2)).to eq(merchants_by_revenue.first(2))
+      end
+    end
+
+    describe '#most_items' do
+      it 'returns a number of merchants with the highest amount of items' do
+        merchant_1 = create(:merchant, :with_revenue, items_per_invoice: 5)
+        merchant_2 = create(:merchant, :with_revenue, items_per_invoice: 4)
+
+        expect(Merchant.most_items(1)).to eq([merchant_1])
+        expect(Merchant.most_items(2)).to eq([merchant_1, merchant_2])
+      end
+    end
+
+    describe '#total_revenue_between_dates' do
+      it 'returns total revenue for all merchants between dates' do
+        merchants = create_list(:merchant, 2, :with_revenue, creation: (DateTime.now - 5.days))
+        start_date = Date.today - 7
+        end_date = Date.today - 2
+        total_revenue_between_dates = merchants.sum(&:revenue).round(2)
+
+        expect(Merchant.total_revenue_between_dates(start_date, end_date)).to eq(total_revenue_between_dates)
+      end
+    end
+  end
+
+  describe 'instance methods' do
+    describe '#revenue' do
+      it "returns total revenue for a merchant" do
+        merchant = create(:merchant, :with_revenue)
+
+        revenue = merchant.invoices.sum do |invoice|
+          invoice.invoice_items.sum do |invoice_item|
+            invoice_item.quantity * invoice_item.unit_price
+          end
+        end.round(2)
+
+        expect(merchant.revenue).to eq(revenue)
+      end
+    end
   end
 end
