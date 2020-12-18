@@ -30,6 +30,7 @@ class Merchant < ApplicationRecord
       .merge(Invoice.shipped)
       .where("invoices.created_at >=  '#{start.to_datetime.beginning_of_day}' AND invoices.created_at <=  '#{ending.to_datetime.end_of_day}'")
       .sum('invoice_items.unit_price * invoice_items.quantity')
+      .round(2)
   end
 
   def revenue
