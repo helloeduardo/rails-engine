@@ -58,11 +58,11 @@ To use Rails Engine locally, you can fork or clone [this](https://github.com/hel
 Below are the commands you will need to run in your terminal once you are inside the rails-engine directory.
 
 * Bundle Install
-```ruby
+```
 $ bundle exec install
 ```
 * Set up Database
-```ruby
+```
 $ rails db:create
 $ rails db:migrate
 $ rails db:seed
