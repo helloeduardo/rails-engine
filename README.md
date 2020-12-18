@@ -80,7 +80,7 @@ After running your migrations, your schema will look something like this!
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Run ```rails s``` in your terminal and utilize ```http://localhost:3000/``` as the base url your API client of choice (Postman, etc.)
+Run ```rails s``` in your terminal and utilize ```http://localhost:3000/``` as the base url in your API client of choice (Postman, etc.)
 
 ### Endpoints
 
