@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :invoice_item do
-    quantity { rand(1..10) }
+    quantity { 3 }
     unit_price { Faker::Commerce.price }
     item
     invoice
